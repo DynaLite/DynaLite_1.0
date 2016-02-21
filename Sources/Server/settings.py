@@ -1,0 +1,11 @@
+__author__ = 'Hari'
+
+NUM_LIGHTS = 1
+CHANGE_DURATION = 5000
+
+'''list of presets'''
+
+
+YELLOW = [7615, 65535, 65535, 3500]
+GREEN = [16173, 65535, 65535, 3500]
+BLUE = [41664, 60535, 65535, 2500]
