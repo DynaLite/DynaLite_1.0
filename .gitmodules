@@ -1,3 +1,0 @@
-[submodule "Sources/SpeechProcessing/pyAudioAnalysis"]
-	path = Sources/SpeechProcessing/pyAudioAnalysis
-	url = git@github.com:tyiannak/pyAudioAnalysis.git
