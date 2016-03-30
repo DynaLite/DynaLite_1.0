@@ -1,3 +1,4 @@
 Sources/Server/.idea/
 *.pyc
 Sources/SpeechProcessing/RAVDESS/
+Sources/SpeechProcessing/pyAudioAnalysis
