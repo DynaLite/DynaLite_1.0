@@ -7,7 +7,7 @@ Train Emotion Classifier
   - Run the script `format_wavs.sh` to format all the wav files correctly. Note: all the files will be moved into the folder `RAVDESS/all` with this script.
   - Run the script `setup_for_training.sh` to orginize the .wav files into folders for training the classifiers.  
 2.  **Setup data** (_or, download pre-formatted dataset_, **_don't do if you did step #1_**)
-  - Here's a link to an already formated dataset:   
+  - Here's a link to an already formated dataset: https://drive.google.com/open?id=0BxSY28GdWJtVVDZ0V2lMZ2c3VWM
 3.  **Download pyAudioAnalysis**  
   - Download a zip of pyAudioAnalysis: https://github.com/tyiannak/pyAudioAnalysis/archive/master.zip
   - Extract and store `pyAudioAnalysis` folder here.
