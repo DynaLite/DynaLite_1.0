@@ -1,6 +1,6 @@
 Train Emotion Classifier
 ------------------------  
-1. Setup data  
+1. **Setup data**  
    *Download from source and format*
   - Download RAVDESS speech database from this link: http://smartlaboratory.org/ravdess/download/  
   - Download speech only, no music, all actors.
@@ -10,9 +10,9 @@ Train Emotion Classifier
   
    *Or, download pre-formatted dataset*  
   - Here's a link to an already formated dataset:   
-2.  Download pyAudioAnalysis  
+2.  **Download pyAudioAnalysis**  
   - Download a zip of pyAudioAnalysis: https://github.com/tyiannak/pyAudioAnalysis/archive/master.zip
   - Extract and store `pyAudioAnalysis` folder here.
   - I'll figure out the best way to include other repos soon.
-3.  Train classifiers 
+3.  **Train classifiers** 
   - Run any of the training scripts to train a specific classifier. The classifiers will be stored in `RAVDESS/models`.  
