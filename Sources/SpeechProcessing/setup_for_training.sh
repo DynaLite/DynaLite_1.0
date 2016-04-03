@@ -5,6 +5,12 @@
 
 rm -rf RAVDESS/female RAVDESS/male RAVDESS/both_genders
 
+# ~~~ REMOVE UNWANTED FILES ~~~~~~
+
+rm RAVDESS/all/03-01-06*
+rm RAVDESS/all/03-01-07*
+rm RAVDESS/all/03-01-08*
+
 # ~~~ MAKE DIRS ~~~~~~
 
 mkdir RAVDESS/female RAVDESS/male RAVDESS/both_genders
