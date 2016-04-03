@@ -1,3 +1,5 @@
+*.wav
+data
 RAVDESS
 PO_data
 pyAudioAnalysis
