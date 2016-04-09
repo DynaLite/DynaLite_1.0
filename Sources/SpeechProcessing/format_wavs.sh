@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Place this file inside the unzipped folder
-# containing all the RAVDESS wav files
+# containing all the RAVDESS_no_silence wav files
 
-cd RAVDESS
+cd DATA
 
 mkdir -p all
 

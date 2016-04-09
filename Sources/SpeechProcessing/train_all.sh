@@ -1,31 +1,20 @@
 #!/bin/bash
 
-mkdir -p RAVDESS/models
+mkdir -p DATA/models
 
-# male_emotions_svm
-python pyAudioAnalysis/audioAnalysis.py trainClassifier -i RAVDESS/male/train_set/neutral/ RAVDESS/male/train_set/calm/ RAVDESS/male/train_set/happy/ RAVDESS/male/train_set/sad/ RAVDESS/male/train_set/angry/ --method svm -o RAVDESS/models/male_emotions_svm
+# # low_vs_high_arousal
+# python pyAudioAnalysis/audioAnalysis.py trainClassifier -i DATA/both_genders/train_set/low_arousal/ DATA/both_genders/train_set/high_arousal/ --method svm -o DATA/both_genders/models/low_vs_high_arousal
 
-# male_emotions_knn
-python pyAudioAnalysis/audioAnalysis.py trainClassifier -i RAVDESS/male/train_set/neutral/ RAVDESS/male/train_set/calm/ RAVDESS/male/train_set/happy/ RAVDESS/male/train_set/sad/ RAVDESS/male/train_set/angry/ --method knn -o RAVDESS/models/male_emotions_knn
+# # low_arousal__low_valence_vs_high_valence
+# python pyAudioAnalysis/audioAnalysis.py trainClassifier -i DATA/both_genders/train_set/low_arousal__low_valence/ DATA/both_genders/train_set/low_arousal__high_valence/ --method svm -o DATA/both_genders/models/low_arousal__low_valence_vs_high_valence
 
-# female_emotions_svm
-python pyAudioAnalysis/audioAnalysis.py trainClassifier -i RAVDESS/female/train_set/neutral/ RAVDESS/female/train_set/calm/ RAVDESS/female/train_set/happy/ RAVDESS/female/train_set/sad/ RAVDESS/female/train_set/angry/ --method svm -o RAVDESS/models/female_emotions_svm
+# # high_arousal__low_valence_vs_high_valence
+python pyAudioAnalysis/audioAnalysis.py trainClassifier -i DATA/both_genders/train_set/high_arousal__low_valence/ DATA/both_genders/train_set/high_arousal__high_valence/ --method svm -o DATA/both_genders/models/high_arousal__low_valence_vs_high_valence
 
-# female_emotions_knn
-python pyAudioAnalysis/audioAnalysis.py trainClassifier -i RAVDESS/female/train_set/neutral/ RAVDESS/female/train_set/calm/ RAVDESS/female/train_set/happy/ RAVDESS/female/train_set/sad/ RAVDESS/female/train_set/angry/ --method knn -o RAVDESS/models/female_emotions_knn
-
-# both_genders_emotions_svm
-python pyAudioAnalysis/audioAnalysis.py trainClassifier -i RAVDESS/both_genders/train_set/neutral/ RAVDESS/both_genders/train_set/calm/ RAVDESS/both_genders/train_set/happy/ RAVDESS/both_genders/train_set/sad/ RAVDESS/both_genders/train_set/angry/ --method svm -o RAVDESS/models/both_genders_emotions_svm
-
-# both_genders_emotions_knn
-python pyAudioAnalysis/audioAnalysis.py trainClassifier -i RAVDESS/both_genders/train_set/neutral/ RAVDESS/both_genders/train_set/calm/ RAVDESS/both_genders/train_set/happy/ RAVDESS/both_genders/train_set/sad/ RAVDESS/both_genders/train_set/angry/ --method knn -o RAVDESS/models/both_genders_emotions_knn
-
-# male_emotions_regression
+# # neutaral vs calm
+# TODO: the following has errors????
+# python pyAudioAnalysis/audioAnalysis.py trainClassifier -i DATA/both_genders/train_set/neutaral/ DATA/both_genders/train_set/calm/ --method svm -o DATA/both_genders/models/neutaral_vs_calm
 
 
-# female_emotions_regression
-
-
-# both_genders_emotions_regression
-
-# python pyAudioAnalysis/audioAnalysis.py trainRegression -i speechEmotion/ --method svm -o svmSpeechEmotion
+# angry vs fear
+# python pyAudioAnalysis/audioAnalysis.py trainClassifier -i DATA/both_genders/train_set/angry/ DATA/both_genders/train_set/fear/ --method svm -o DATA/both_genders/models/angry_vs_fear

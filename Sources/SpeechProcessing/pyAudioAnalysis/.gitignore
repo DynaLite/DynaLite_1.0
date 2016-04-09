@@ -1,0 +1,5 @@
+recordings
+data
+*.pyc
+*.npy
+*.csv
