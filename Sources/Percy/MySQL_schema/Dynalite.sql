@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 08, 2016 at 07:56 AM
+-- Generation Time: Apr 09, 2016 at 10:09 AM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.8
 
@@ -50,7 +50,7 @@ INSERT INTO `bulbs` (`id`, `name`, `location`, `color`, `isON`) VALUES
 --
 
 CREATE TABLE `location` (
-  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `location` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -59,7 +59,7 @@ CREATE TABLE `location` (
 -- Dumping data for table `location`
 --
 
-INSERT INTO `location` (`id`, `update_at`, `location`) VALUES
+INSERT INTO `location` (`user_id`, `update_at`, `location`) VALUES
 (1, '2016-04-08 07:48:42', 'mint');
 
 -- --------------------------------------------------------
@@ -71,11 +71,11 @@ INSERT INTO `location` (`id`, `update_at`, `location`) VALUES
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `unique_id` varchar(23) NOT NULL,
+  `p_o_id` varchar(50) DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `encrypted_password` varchar(80) NOT NULL,
   `salt` varchar(10) NOT NULL,
-  `p_o_id` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -84,8 +84,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `unique_id`, `name`, `email`, `encrypted_password`, `salt`, `p_o_id`, `created_at`, `updated_at`) VALUES
-(1, '570173c2905216.39770342', 'Percy', 'p@p', 'YoeQ5eLI/PNv5b6vxHO5AXB5vOc4ZmRiYWVhMjJh', '8fdbaea22a', 'sdkcjbsdhjbvoirfjjskdbcjsdcsd', '2016-04-03 15:49:22', NULL);
+INSERT INTO `users` (`id`, `unique_id`, `p_o_id`, `name`, `email`, `encrypted_password`, `salt`, `created_at`, `updated_at`) VALUES
+(1, '570173c2905216.39770342', 'fc0665f0-6628-4fbc-9654-c0ea79bedc8d', 'Percy', 'p@p', 'YoeQ5eLI/PNv5b6vxHO5AXB5vOc4ZmRiYWVhMjJh', '8fdbaea22a', '2016-04-03 15:49:22', NULL);
 
 --
 -- Indexes for dumped tables
@@ -101,7 +101,7 @@ ALTER TABLE `bulbs`
 -- Indexes for table `location`
 --
 ALTER TABLE `location`
-  ADD KEY `id` (`id`);
+  ADD KEY `id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -128,7 +128,7 @@ ALTER TABLE `users`
 -- Constraints for table `location`
 --
 ALTER TABLE `location`
-  ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
