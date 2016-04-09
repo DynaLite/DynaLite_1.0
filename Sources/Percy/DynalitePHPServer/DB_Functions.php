@@ -74,7 +74,7 @@ class DB_Functions {
     }
 
     public function updateLocation($id, $location) {
-        $stmt = $this->conn->prepare("SELECT * from location WHERE id = ?");
+        $stmt = $this->conn->prepare("SELECT * from location WHERE user_id = ?");
  
         $stmt->bind_param("s", $id);
  
@@ -93,14 +93,14 @@ class DB_Functions {
         }
 
         if($isUserLocationExisted){
-            $stmt = $this->conn->prepare("UPDATE location SET update_at=NOW(), location=? WHERE id = ?");
+            $stmt = $this->conn->prepare("UPDATE location SET update_at=NOW(), location=? WHERE user_id = ?");
  
             $stmt->bind_param("ss", $location, $id);
  
             $stmt->execute();
         }
         else{
-            $stmt = $this->conn->prepare("INSERT INTO location(id, location) VALUES(?, ?)");
+            $stmt = $this->conn->prepare("INSERT INTO location(user_id, location) VALUES(?, ?)");
  
             $stmt->bind_param("ss", $id, $location);
  
