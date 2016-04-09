@@ -109,6 +109,17 @@ class DB_Functions {
 
         return true;
     }
+
+    public function updatePOID($email, $p_o_id) {
+        
+        $stmt = $this->conn->prepare("UPDATE users SET update_at=NOW(), p_o_id=? WHERE email = ?");
+ 
+        $stmt->bind_param("ss", $p_o_id, $email);
+ 
+        $stmt->execute();
+
+        return true;
+    }
  
     /**
      * Get user by email and password
