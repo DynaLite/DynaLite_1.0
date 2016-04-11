@@ -64,6 +64,42 @@ class DB_Functions {
         }
     }
 
+    public function getUsers() {
+ 
+        $stmt = $this->conn->prepare("SELECT p_o_id FROM users");
+ 
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $users = array();
+            while($user = $result->fetch_assoc()){
+                array_push($users, $user);
+            }
+            $stmt->close();
+
+            return $users;
+        } else {
+            return NULL;
+        }
+    }
+
+    public function getOccupants() {
+ 
+        $stmt = $this->conn->prepare("SELECT users.p_o_id as p_o_id, location.location as location FROM users INNER JOIN location ON users.id=location.user_id");
+ 
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $occupants = array();
+            while($occupant = $result->fetch_assoc()){
+                array_push($occupants, $occupant);
+            }
+            $stmt->close();
+
+            return $occupants;
+        } else {
+            return NULL;
+        }
+    }
+
     public function updateColor($location, $color) {
         
         $stmt = $this->conn->prepare("UPDATE bulbs SET color=?, isON=1 WHERE location = ?");

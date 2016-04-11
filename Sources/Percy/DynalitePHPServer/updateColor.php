@@ -7,4 +7,6 @@ $response = array("error" => FALSE);
  
 $db->updateColor($_POST['location'], $_POST['color']);
 
+echo json_encode($response)
+
 ?>
