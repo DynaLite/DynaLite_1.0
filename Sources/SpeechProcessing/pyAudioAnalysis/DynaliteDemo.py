@@ -1,4 +1,5 @@
 import threading 
+from lifxlan import *
 import Queue
 import time
 import datetime
@@ -14,7 +15,6 @@ from scipy.fftpack import rfft
 import dynaliteAudioSegmentation as dAS
 import audioTrainTest as aT
 from scipy.fftpack import fft
-
 
 # ~~~ CONSTANTS ~~~~~~~~~
 
@@ -43,7 +43,64 @@ config = {
   'raise_on_warnings': True,
 }
 
+lifxlan = LifxLAN()
+lifxlan.set_power_all_lights("on", rapid=True)
+
+RED = 			[62978, 65535, 65535, 3500]
+ORANGE = 		[5525,  65535, 65535, 3500]
+YELLOW = 		[7615,  65535, 65535, 3500]
+GREEN = 		[16173, 65535, 65535, 3500]
+CYAN = 			[29814, 65535, 65535, 3500]
+BLUE = 			[43634, 65535, 65535, 3500]
+PURPLE = 		[50486, 65535, 65535, 3500]
+PINK = 			[58275, 65535, 47142, 3500]
+WHITE = 		[58275, 0, 	   65535, 5500]
+COLD_WHTE = 	[58275, 0,     65535, 9000]
+WARM_WHITE = 	[58275, 0,     65535, 3200]
+GOLD = 			[58275, 0,     65535, 2500]
+
+THRESHOLD = 0.8
+
+# SVM Models
+MODELS_DIR 									= "MODELS/demo/"
+LOW_VS_HIGH_AROUSAL 						= "low_vs_high_arousal"
+LOW_AROUSAL__LOW_VALENCE_VS_HIGH_VALENCE 	= "low_arousal__low_valence_vs_high_valence"
+HIGH_AROUSAL__LOW_VALENCE_VS_HIGH_VALENCE 	= "high_arousal__low_valence_vs_high_valence"
+ANGRY_VS_FEAR 								= "angry_vs_fear"
+CALM_VS_ALL									= "calm_vs_all"
+
+# Classes
+LOW_AROUSAL 				= "low_arousal"
+HIGH_AROUSAL 				= "high_arousal"
+LOW_AROUSAL__LOW_VALENCE 	= "low_arousal__low_valence"
+LOW_AROUSAL__HIGH_VALENCE 	= "low_arousal__high_valence"
+HIGH_AROUSAL__LOW_VALENCE 	= "high_arousal__low_valence"
+HIGH_AROUSAL__HIGH_VALENCE 	= "high_arousal__high_valence"
+NEUTRAL						= "neutral"
+CALM 						= "calm"
+HAPPY 						= "happy"
+SAD 						= "sad"
+ANGRY 						= "angry"
+FEAR 						= "fear"
+DISGUST 					= "disgust"
+BOREDOM 					= "boredom"
+
+# Emotion to Color
+emotion_color_map = {
+	NEUTRAL : WARM_WHITE,
+	CALM 	: PURPLE,
+	HAPPY 	: GREEN,
+	SAD 	: BLUE,
+	ANGRY 	: RED,
+	FEAR 	: ORANGE,
+	DISGUST : GOLD,
+	BOREDOM : PINK
+}
+
 # ~~~ FUNC DEFS ~~~~~~~~~
+
+def model_path(model_name):
+	return MODELS_DIR + model_name
 
 def set_lightColor(location, color):
 # locations are estimote labels which includes like mint, ice, blueberry color 
@@ -62,7 +119,7 @@ def set_lightColor(location, color):
 		return False
 
 	# Do query
-	query = "UPDATE bulbs SET color=\'"+color+"\' WHERE location=\'"+location+"\'"
+	query = "UPDATE bulbs SET color=\'"+color+"\' WHERE locations=\'"+location+"\'"
 	cursor.execute(query)
 
 	return
@@ -124,6 +181,14 @@ def get_occupants():
 
 
 	return occupants
+
+def classify_file(recording, model_name):
+	Result, P, classNames = aT.fileClassification(recording, model_path(model_name), "svm")
+	winner_class = classNames[int(Result)]
+	winner_prob =P[int(Result)]
+	print "Winner class: " + winner_class + " - with prob: " + str(winner_prob)
+
+	return (winner_class, winner_prob)
 
 # ~~~ GLOBALS ~~~~~~~~~
 
@@ -233,10 +298,31 @@ if __name__ == '__main__':
 			logging.debug('Getting ' + str(recording) + ' : ' 
 						  + str(unprocessed_files.qsize()) + ' items in queue')                
 						
-			[Result, P, classNames] = aT.fileClassification(recording, "../MODELS/test_DATA_1/all", "svm")
-			# classChosen
-			print "Winner class: " + classNames[int(Result)] + " " +str(P[int(Result)])
+			# Classify the emotion
+			class_name, prob = classify_file(recording, LOW_VS_HIGH_AROUSAL)
 
-
-
+			if class_name < THRESHOLD:
+				lifxlan.set_color_all_lights(emotion_color_map[NEUTRAL], rapid=False)
+			elif class_name == LOW_AROUSAL:
+				class_name, prob = classify_file(recording, LOW_AROUSAL__LOW_VALENCE_VS_HIGH_VALENCE)
+				if prob < THRESHOLD:
+					lifxlan.set_color_all_lights(emotion_color_map[NEUTRAL], rapid=False)
+				elif class_name == LOW_AROUSAL__LOW_VALENCE:
+					lifxlan.set_color_all_lights(emotion_color_map[SAD], rapid=False)
+				elif class_name == LOW_AROUSAL__HIGH_VALENCE:
+					lifxlan.set_color_all_lights(emotion_color_map[CALM], rapid=False)
+			elif class_name == HIGH_AROUSAL:
+				class_name, prob = classify_file(recording, HIGH_AROUSAL__LOW_VALENCE_VS_HIGH_VALENCE)
+				if prob < THRESHOLD:
+					lifxlan.set_color_all_lights(emotion_color_map[NEUTRAL], rapid=False)
+				elif class_name == HIGH_AROUSAL__LOW_VALENCE:
+					class_name, prob = classify_file(recording, ANGRY_VS_FEAR)
+					if prob < THRESHOLD:
+						lifxlan.set_color_all_lights(emotion_color_map[NEUTRAL], rapid=False)
+					elif class_name == ANGRY:
+						lifxlan.set_color_all_lights(emotion_color_map[ANGRY], rapid=False)
+					elif class_name == FEAR:
+						lifxlan.set_color_all_lights(emotion_color_map[FEAR], rapid=False)
+				elif class_name == HIGH_AROUSAL__HIGH_VALENCE:
+					lifxlan.set_color_all_lights(emotion_color_map[HAPPY], rapid=False)
 		pass
