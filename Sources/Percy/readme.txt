@@ -3,13 +3,13 @@ folders:
 Android:
 	the package is named "registration"
 	to change the server ip addr -> edit AppConfig.java
-	either create your account 
+	either create your account
 	or use email:p@p pwd:123
 
 DynalitePHPServer:
 	MySQL login information can be found in Config.php
 	Usage:
-	
+
 	getBulbs:
 		no parameter
 		return:(json)
@@ -22,7 +22,7 @@ DynalitePHPServer:
 				    "isON": 1
 				  }
 			}
-	
+
 	updateLocation:
 		POST: user_id, location
 		no return
